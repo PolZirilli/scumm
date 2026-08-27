@@ -138,6 +138,7 @@
   function openWindow(title){
     windowTitle.textContent = title;
     overlay.classList.add('show');
+    windowEl.classList.add('maximized');
   }
 
   function openConsoleWindow(systemId){
