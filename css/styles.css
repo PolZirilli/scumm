@@ -443,7 +443,7 @@ body {
 
 /* ---------- catalog sidebar ---------- */
 .sidebar {
-  width: 300px;
+  width: 360px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -496,8 +496,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 6px 4px;
+  gap: 2px;
+  padding: 2px 2px;
   cursor: pointer;
   text-align: center;
 }
