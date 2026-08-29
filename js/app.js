@@ -1,37 +1,37 @@
-(function(){
+(function () {
 
   // ---------- System registry ----------
   // needsBios: systems that typically require a legitimate BIOS file to run.
   const SYSTEMS = {
-    nes:         { label: 'NES / Famicom' },
-    snes:        { label: 'Super Nintendo' },
-    segaMD:      { label: 'Mega Drive / Genesis' },
-    gb:          { label: 'Game Boy / Color' },
-    gba:         { label: 'Game Boy Advance' },
-    n64:         { label: 'Nintendo 64' },
-    psx:         { label: 'PlayStation', needsBios: true },
-    atari2600:   { label: 'Atari 2600' },
+    nes: { label: 'NES / Famicom' },
+    snes: { label: 'Super Nintendo' },
+    segaMD: { label: 'Mega Drive / Genesis' },
+    gb: { label: 'Game Boy / Color' },
+    gba: { label: 'Game Boy Advance' },
+    n64: { label: 'Nintendo 64' },
+    psx: { label: 'PlayStation', needsBios: true },
+    atari2600: { label: 'Atari 2600' },
     // "More consoles" (Start menu flyout)
-    segaMS:      { label: 'Sega Master System' },
-    segaGG:      { label: 'Sega Game Gear' },
-    segaCD:      { label: 'Sega CD', needsBios: true },
-    sega32x:     { label: 'Sega 32X' },
-    segaSaturn:  { label: 'Sega Saturn', needsBios: true },
-    arcade:      { label: 'Arcade (MAME 2003)' },
-    coleco:      { label: 'ColecoVision' },
-    pce:         { label: 'PC Engine / TurboGrafx-16' },
-    pcfx:        { label: 'PC-FX', needsBios: true },
-    ngp:         { label: 'Neo Geo Pocket' },
-    ws:          { label: 'WonderSwan' },
-    lynx:        { label: 'Atari Lynx' },
-    jaguar:      { label: 'Atari Jaguar' },
-    a5200:       { label: 'Atari 5200' },
-    atari7800:   { label: 'Atari 7800' },
-    c64:         { label: 'Commodore 64' },
-    amiga:       { label: 'Commodore Amiga' },
-    nds:         { label: 'Nintendo DS' },
-    vb:          { label: 'Virtual Boy' },
-    '3do':       { label: '3DO', needsBios: true }
+    segaMS: { label: 'Sega Master System' },
+    segaGG: { label: 'Sega Game Gear' },
+    segaCD: { label: 'Sega CD', needsBios: true },
+    sega32x: { label: 'Sega 32X' },
+    segaSaturn: { label: 'Sega Saturn', needsBios: true },
+    arcade: { label: 'Arcade (MAME 2003)' },
+    coleco: { label: 'ColecoVision' },
+    pce: { label: 'PC Engine / TurboGrafx-16' },
+    pcfx: { label: 'PC-FX', needsBios: true },
+    ngp: { label: 'Neo Geo Pocket' },
+    ws: { label: 'WonderSwan' },
+    lynx: { label: 'Atari Lynx' },
+    jaguar: { label: 'Atari Jaguar' },
+    a5200: { label: 'Atari 5200' },
+    atari7800: { label: 'Atari 7800' },
+    c64: { label: 'Commodore 64' },
+    amiga: { label: 'Commodore Amiga' },
+    nds: { label: 'Nintendo DS' },
+    vb: { label: 'Virtual Boy' },
+    '3do': { label: '3DO', needsBios: true }
   };
 
   // Icons shown on the desktop. Point these at your own PNG logos whenever you
@@ -42,7 +42,7 @@
     segaMD: 'assets/icons/segaMD.png',
     gb: 'assets/icons/gb.png'
   };
-  const DESKTOP_SYSTEMS = ['nes','snes','segaMD','gb'];
+  const DESKTOP_SYSTEMS = ['nes', 'snes', 'segaMD', 'gb'];
   const MORE_SYSTEMS = Object.keys(SYSTEMS).filter(id => !DESKTOP_SYSTEMS.includes(id));
 
   // ---------- Catalog ----------
@@ -61,18 +61,18 @@
     iconGrid.appendChild(buildDesktopIcon(id, SYSTEMS[id].label, ICON_PATHS[id]));
   });
 
-  function buildDesktopIcon(id, label, iconPath){
+  function buildDesktopIcon(id, label, iconPath) {
     const btn = document.createElement('button');
     btn.className = 'desktop-icon';
     btn.innerHTML = '<div class="icon-box"><img src="' + iconPath + '" alt="' + label + '"></div>' +
       '<div class="label">' + label.replace(' / ', '<br>') + '</div>';
-    btn.addEventListener('click', function(){ openConsoleWindow(id); });
+    btn.addEventListener('click', function () { openConsoleWindow(id); });
     return btn;
   }
 
   // ---------- Taskbar clock ----------
   const taskbarClock = document.getElementById('taskbar-clock');
-  function updateClock(){
+  function updateClock() {
     const now = new Date();
     const timePart = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
     const fullDate = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
@@ -91,25 +91,25 @@
     const row = document.createElement('div');
     row.className = 'submenu-row';
     row.textContent = SYSTEMS[id].label;
-    row.addEventListener('click', function(){
+    row.addEventListener('click', function () {
       closeStartMenu();
       openConsoleWindow(id);
     });
     startSubmenu.appendChild(row);
   });
 
-  function openStartMenu(){ startMenu.classList.add('show'); startBtn.classList.add('open'); }
-  function closeStartMenu(){ startMenu.classList.remove('show'); startBtn.classList.remove('open'); }
+  function openStartMenu() { startMenu.classList.add('show'); startBtn.classList.add('open'); }
+  function closeStartMenu() { startMenu.classList.remove('show'); startBtn.classList.remove('open'); }
 
-  startBtn.addEventListener('click', function(e){
+  startBtn.addEventListener('click', function (e) {
     e.stopPropagation();
     if (startMenu.classList.contains('show')) closeStartMenu();
     else openStartMenu();
   });
-  startMenu.addEventListener('click', function(e){ e.stopPropagation(); });
+  startMenu.addEventListener('click', function (e) { e.stopPropagation(); });
   document.addEventListener('click', closeStartMenu);
 
-  document.getElementById('refresh-item').addEventListener('click', function(){
+  document.getElementById('refresh-item').addEventListener('click', function () {
     location.reload();
   });
 
@@ -122,26 +122,26 @@
   const minBtn = document.getElementById('min-btn');
   const maxBtn = document.getElementById('max-btn');
 
-  closeDot.addEventListener('click', function(){
+  closeDot.addEventListener('click', function () {
     // The page reloads on close: EmulatorJS leaves global state (WASM/modules)
     // that isn't safe to hot-reinitialize for another console or ROM.
     location.reload();
   });
-  minBtn.addEventListener('click', function(){
+  minBtn.addEventListener('click', function () {
     // No taskbar restore slot yet — minimizing just returns to a fresh desktop.
     location.reload();
   });
-  maxBtn.addEventListener('click', function(){
+  maxBtn.addEventListener('click', function () {
     windowEl.classList.toggle('maximized');
   });
 
-  function openWindow(title){
+  function openWindow(title) {
     windowTitle.textContent = title;
     overlay.classList.add('show');
     windowEl.classList.add('maximized');
   }
 
-  function openConsoleWindow(systemId){
+  function openConsoleWindow(systemId) {
     const sys = SYSTEMS[systemId];
     windowBody.innerHTML = `
       <div class="sidebar">
@@ -150,11 +150,12 @@
       </div>
       <div class="main-area">
         <div class="screen-wrap">
-          <div class="screen-box">
+          <div class="screen-box" id="screen-box">
             <div class="screen-placeholder" id="screen-placeholder">
               Pick a game from the catalog or load your own ROM below to start playing.
             </div>
             <div id="game" style="display:none;"></div>
+            <button class="pseudo-fs-exit" id="pseudo-fs-exit" title="Exit fullscreen">✕ Exit fullscreen</button>
           </div>
         </div>
         <div class="controls-row">
@@ -195,7 +196,7 @@
         item.className = 'catalog-item';
         item.innerHTML = '<div class="cover">' + (g.cover ? '<img class="halftone" src="' + g.cover + '" alt="">' : '') + '</div>' +
           '<div class="name">' + g.name + '</div>';
-        item.addEventListener('click', function(){
+        item.addEventListener('click', function () {
           launchEmulator(systemId, g.url, g.name, g.biosUrl || null);
         });
         catalogList.appendChild(item);
@@ -215,16 +216,16 @@
     const biosFname = document.getElementById('bios-fname');
     const playBtn = document.getElementById('play-btn');
 
-    romInput.addEventListener('change', function(){
+    romInput.addEventListener('change', function () {
       romFile = romInput.files[0] || null;
       romFname.textContent = romFile ? romFile.name : 'Choose your ROM (.zip, .nes, .sfc, .bin, .iso...)';
       playBtn.disabled = !romFile;
     });
-    biosInput.addEventListener('change', function(){
+    biosInput.addEventListener('change', function () {
       biosFile = biosInput.files[0] || null;
       biosFname.textContent = biosFile ? biosFile.name : 'Required by some games on this system';
     });
-    playBtn.addEventListener('click', function(){
+    playBtn.addEventListener('click', function () {
       if (!romFile) return;
       const gameUrl = URL.createObjectURL(romFile);
       const biosUrl = biosFile ? URL.createObjectURL(biosFile) : null;
@@ -234,27 +235,75 @@
     openWindow(sys.label);
   }
 
+  // ---------- Fullscreen helpers ----------
+  // The standard Fullscreen API works on most desktop and Android browsers,
+  // but iOS Safari has never supported Element.requestFullscreen() for
+  // anything other than a bare <video> element (long-standing WebKit
+  // limitation). To make the Fullscreen button actually do something on
+  // every device, we try the real API (with vendor prefixes) first, and
+  // fall back to a CSS-only "pseudo fullscreen" that pins the emulator
+  // screen over the whole viewport when the real API isn't available or
+  // silently fails.
+  function fsElement() {
+    return document.fullscreenElement || document.webkitFullscreenElement ||
+      document.mozFullScreenElement || document.msFullscreenElement || null;
+  }
+  function nativeFsSupported(el) {
+    return !!(el.requestFullscreen || el.webkitRequestFullscreen ||
+      el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullscreen);
+  }
+  function requestNativeFs(el) {
+    const fn = el.requestFullscreen || el.webkitRequestFullscreen ||
+      el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+    try {
+      const result = fn.call(el);
+      if (result && typeof result.catch === 'function') {
+        result.catch(function () { enablePseudoFullscreen(el); });
+      }
+    } catch (e) {
+      enablePseudoFullscreen(el);
+    }
+  }
+  function exitNativeFs() {
+    const fn = document.exitFullscreen || document.webkitExitFullscreen ||
+      document.webkitCancelFullScreen || document.mozCancelFullScreen || document.msExitFullscreen;
+    if (fn) { try { fn.call(document); } catch (e) { } }
+  }
+  function enablePseudoFullscreen(el) {
+    el.classList.add('pseudo-fullscreen');
+    document.body.classList.add('pseudo-fullscreen-active');
+  }
+  function disablePseudoFullscreen(el) {
+    el.classList.remove('pseudo-fullscreen');
+    document.body.classList.remove('pseudo-fullscreen-active');
+  }
+  function isPseudoFullscreenActive() {
+    return document.body.classList.contains('pseudo-fullscreen-active');
+  }
+
   // ---------- Launch EmulatorJS ----------
   const CDN_CHANNELS = ['stable', 'latest'];
 
-  function tryLoadChannel(channelIndex, onAllFailed){
+  function tryLoadChannel(channelIndex, onAllFailed) {
     if (channelIndex >= CDN_CHANNELS.length) { onAllFailed(); return; }
     const base = 'https://cdn.emulatorjs.org/' + CDN_CHANNELS[channelIndex] + '/data/';
     window.EJS_pathtodata = base;
     const script = document.createElement('script');
     script.src = base + 'loader.js';
-    script.onerror = function(){
+    script.onerror = function () {
       script.remove();
       tryLoadChannel(channelIndex + 1, onAllFailed);
     };
     document.body.appendChild(script);
   }
 
-  function launchEmulator(systemId, gameUrl, gameName, biosUrl){
+  function launchEmulator(systemId, gameUrl, gameName, biosUrl) {
     const statusMsg = document.getElementById('status-msg');
     const placeholder = document.getElementById('screen-placeholder');
     const gameDiv = document.getElementById('game');
     const fullscreenBtn = document.getElementById('fullscreen-btn');
+    const screenBox = document.getElementById('screen-box');
+    const pseudoFsExitBtn = document.getElementById('pseudo-fs-exit');
 
     statusMsg.textContent = 'Loading emulator...';
     statusMsg.className = 'status-msg';
@@ -278,11 +327,35 @@
     if (biosUrl) window.EJS_biosUrl = biosUrl;
 
     fullscreenBtn.disabled = false;
-    fullscreenBtn.onclick = function(){
-      if (gameDiv.requestFullscreen) gameDiv.requestFullscreen();
+    function updateFsButton() {
+      const active = !!fsElement() || isPseudoFullscreenActive();
+      fullscreenBtn.textContent = active ? '✕ Exit fullscreen' : '⛶ Fullscreen';
+    }
+    fullscreenBtn.onclick = function () {
+      if (fsElement()) {
+        exitNativeFs();
+      } else if (isPseudoFullscreenActive()) {
+        disablePseudoFullscreen(screenBox);
+        updateFsButton();
+      } else if (nativeFsSupported(screenBox)) {
+        requestNativeFs(screenBox);
+      } else {
+        enablePseudoFullscreen(screenBox);
+        updateFsButton();
+      }
     };
+    pseudoFsExitBtn.onclick = function () {
+      if (fsElement()) {
+        exitNativeFs();
+      } else {
+        disablePseudoFullscreen(screenBox);
+        updateFsButton();
+      }
+    };
+    ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange']
+      .forEach(function (evt) { document.addEventListener(evt, updateFsButton); });
 
-    tryLoadChannel(0, function(){
+    tryLoadChannel(0, function () {
       statusMsg.textContent = 'Could not load EmulatorJS from cdn.emulatorjs.org (both the "stable" and "latest" channels failed). ' +
         'This is almost always an ad-blocker, antivirus, or network firewall blocking that domain — not a problem with the ROM. ' +
         'Try an incognito window, or check the Network tab in dev tools (F12).';
